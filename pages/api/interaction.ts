@@ -81,11 +81,10 @@ export default async function handler(
 							});
 					}
 
-					function gen() {
-						return generateFromMap(map, {
+					const gen = () =>
+						generateFromMap(map, {
 							start: prompt
 						});
-					}
 
 					let resp = gen();
 
