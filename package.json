@@ -10,8 +10,16 @@
   },
   "dependencies": {
     "@next/font": "13.0.7",
+    "discord-api-types": "^0.37.24",
+    "discord-verify": "^1.0.0",
+    "mrkv": "./mrkv",
     "next": "13.0.7",
     "react": "18.2.0",
     "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.17",
+    "@types/react": "18.0.26",
+    "typescript": "4.9.4"
   }
 }
