@@ -88,8 +88,12 @@ export default async function handler(
 
 					let resp = gen();
 
-					while (resp.split(' ').length < 2) {
+					let i = 0;
+
+					while (resp.split(' ').length < 2 && i < 10) {
 						resp = gen();
+
+						i++;
 					}
 
 					return res.send({
