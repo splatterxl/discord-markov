@@ -1,0 +1,3 @@
+[submodule "mrkv"]
+	path = mrkv
+	url = https://github.com/splatterxl/mrkv
