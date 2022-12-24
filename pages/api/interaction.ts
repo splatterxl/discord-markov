@@ -126,7 +126,7 @@ export default async function handler(
 async function respond(response: APIInteractionResponse, body: APIInteraction) {
 	switch (response.type) {
 		case InteractionResponseType.ChannelMessageWithSource: {
-			const url = `https://discord.com/api/v10/webhooks/1054859574806589440/${body.token}/messages/@original`;
+			const url = `https://discord.com/api/v10/webhooks/${process.env.APP_ID}/${body.token}/messages/@original`;
 
 			const json = await fetch(url, {
 				method: 'PATCH',
