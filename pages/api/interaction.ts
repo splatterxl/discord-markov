@@ -100,7 +100,7 @@ export default async function handler(
 
 					let i = 0;
 
-					while (resp.split(' ').length < 2 && i < 10) {
+					while (resp.split(' ').length < 2 && i < 5) {
 						resp = gen();
 
 						i++;
@@ -126,17 +126,17 @@ export default async function handler(
 async function respond(response: APIInteractionResponse, body: APIInteraction) {
 	switch (response.type) {
 		case InteractionResponseType.ChannelMessageWithSource: {
-			const url = `https://discord.com/api/v10/interactions/${body.id}/${body.token}/callback`;
+			const url = `https://discord.com/api/v10/webhooks/1054859574806589440/${body.token}/messages/@original`;
 
-			await fetch(url, {
-				method: 'POST',
-				body: JSON.stringify(response),
+			const json = await fetch(url, {
+				method: 'PATCH',
+				body: JSON.stringify(response.data),
 				headers: {
 					Authorization: `Bot ${process.env.TOKEN}`,
 					'User-Agent': `DiscordBot (v1.0.0; https://github.com/splatterxl/hn-member)`,
 					'Content-Type': 'application/json'
 				}
-			});
+			}).then((res) => res.json());
 		}
 	}
 }
