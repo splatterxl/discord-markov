@@ -33,7 +33,7 @@ export default async function handler(
 		rawBody,
 		signature?.toString(),
 		timestamp?.toString(),
-		'a8d49db6bf10b96427b94ccb795b8ed4c94e5de6df7605e320768c6fbce411ce',
+		process.env.PUBLIC_KEY,
 		webcrypto.subtle
 	);
 
