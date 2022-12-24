@@ -46,7 +46,11 @@ export default async function handler(
 	switch (body.type) {
 		case InteractionType.Ping:
 			return res.send({ type: InteractionResponseType.Pong });
-		case InteractionType.ApplicationCommand:
+		case InteractionType.ApplicationCommand: {
+			res.send({
+				type: InteractionResponseType.DeferredChannelMessageWithSource
+			});
+
 			switch (body.data.type) {
 				case ApplicationCommandType.ChatInput: {
 					let prompt: string | undefined = undefined;
@@ -61,24 +65,30 @@ export default async function handler(
 
 					if (prompt) {
 						if (prompt.split(' ').length > 1)
-							return res.send({
-								type: InteractionResponseType.ChannelMessageWithSource,
-								data: {
-									content: '⚠️ Please only provide one word in your prompt',
-									flags: 64
-								}
-							});
+							return respond(
+								{
+									type: InteractionResponseType.ChannelMessageWithSource,
+									data: {
+										content: '⚠️ Please only provide one word in your prompt',
+										flags: 64
+									}
+								},
+								body
+							);
 
 						const array = map.get(prompt);
 
 						if (!array)
-							return res.send({
-								type: InteractionResponseType.ChannelMessageWithSource,
-								data: {
-									content: "⚠️ I've never seen that word before!",
-									flags: 64
-								}
-							});
+							return respond(
+								{
+									type: InteractionResponseType.ChannelMessageWithSource,
+									data: {
+										content: "⚠️ I've never seen that word before!",
+										flags: 64
+									}
+								},
+								body
+							);
 					}
 
 					const gen = () =>
@@ -96,15 +106,37 @@ export default async function handler(
 						i++;
 					}
 
-					return res.send({
-						type: InteractionResponseType.ChannelMessageWithSource,
-						data: {
-							content: resp
-						}
-					});
+					return respond(
+						{
+							type: InteractionResponseType.ChannelMessageWithSource,
+							data: {
+								content: resp
+							}
+						},
+						body
+					);
 				}
 				default:
 					res.send('' as any);
 			}
+		}
+	}
+}
+
+async function respond(response: APIInteractionResponse, body: APIInteraction) {
+	switch (response.type) {
+		case InteractionResponseType.ChannelMessageWithSource: {
+			const url = `https://discord.com/api/v10/interactions/${body.id}/${body.token}/messages/@original`;
+
+			await fetch(url, {
+				method: 'PATCH',
+				body: JSON.stringify(response.data),
+				headers: {
+					Authorization: `Bot ${process.env.TOKEN}`,
+					'User-Agent': `DiscordBot (v1.0.0; https://github.com/splatterxl/hn-member)`,
+					'Content-Type': 'application/json'
+				}
+			});
+		}
 	}
 }
