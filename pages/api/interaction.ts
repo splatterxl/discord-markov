@@ -126,11 +126,11 @@ export default async function handler(
 async function respond(response: APIInteractionResponse, body: APIInteraction) {
 	switch (response.type) {
 		case InteractionResponseType.ChannelMessageWithSource: {
-			const url = `https://discord.com/api/v10/interactions/${body.id}/${body.token}/messages/@original`;
+			const url = `https://discord.com/api/v10/interactions/${body.id}/${body.token}/callback`;
 
 			await fetch(url, {
-				method: 'PATCH',
-				body: JSON.stringify(response.data),
+				method: 'POST',
+				body: JSON.stringify(response),
 				headers: {
 					Authorization: `Bot ${process.env.TOKEN}`,
 					'User-Agent': `DiscordBot (v1.0.0; https://github.com/splatterxl/hn-member)`,
