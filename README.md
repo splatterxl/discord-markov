@@ -1,6 +1,6 @@
 # discord-markov
 
-A Discord interactions bot to respond to prompts with a [Markov chain result](https://en.wikipedia.org/wiki/Markov_chain). It's quite a simple algorithm but quite memory-intensive.
+A Discord interactions bot to respond to prompts with a [Markov chain result](https://en.wikipedia.org/wiki/Markov_chain). It's a simple algorithm but quite memory-intensive.
 
 ![Demo](https://i.imgur.com/9CoCfvU.png)
 
